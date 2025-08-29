@@ -1,174 +1,131 @@
+@font-face {
+    font-family:'montserrat';
+    src: url("./static/Montserrat-Regular.ttf");
+    font-weight: normal;
+}
 *{
-    padding:0;
     margin:0;
+    padding: 0;
     box-sizing: border-box;
 }
 body{
-    background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
-    min-height: 100vh;
-    font-family: 'Segoe UI', Arial, sans-serif;
+    width: 100vw;
+    height: 100vh;
+    font-family: 'montserrat',sans-serif;
+    background-color: rgb(47, 57, 67);
+}
+main{
+    height: 100%;
+    width: 100%;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
+    gap:10px;
 }
-#container {
-    background: white;
-    border-radius: 18px;
-    box-shadow: 0 6px 24px rgba(0,0,0,0.12);
-    padding: 32px 28px;
-    width: 90vw;
-    max-width: 500px;
-}
-#intro {
-    font-size: 1.35rem;
-    font-weight: bold;
-    margin-bottom: 14px;
-    color: #2a4d69;
-    text-align: center;
-}
-#form{
-    display: flex;
-    margin-bottom: 22px;
-    gap: 10px;
-}
-
-#form input {
-    flex: 1;
-    padding: 10px 12px;
-    font-size: 1rem;
-    border-radius: 7px;
-    border: 1px solid #a9a9a9;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-    outline: none;
-    transition: border-color 0.2s;
-}
-#form input:focus {
-    border-color: #28a745;
-}
-#submit{
-    padding: 10px 18px;
-    font-size: 1rem;
-    border-radius: 7px;
-    border: none;
-    background-color: #009eff;
+main h1{
     color: white;
     font-weight: 600;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-    transition: background 0.2s, box-shadow 0.2s;
-    cursor: pointer;
+    font-size:x-large;
 }
-#submit:hover {
-    background: #007bce;
-    box-shadow: 0 2px 7px rgba(0,0,0,0.18);
-}
-
-#tasklists {
-    list-style: none;
-    padding: 0;
-}
-#tasklists li {
+#container{
+    width: 35vw;
+    height: 80vh;
+    border-radius: 50px;
+    overflow: hidden;
+    background-image:   linear-gradient(to bottom right,#F46AD6,#3C17C3) ;
     display: flex;
-    gap: 10px;
+    flex-direction: column;
     align-items: center;
-    background: #f0f8ff;
-    margin-bottom: 12px;
-    padding: 12px 16px;
-    border-radius: 8px;
+    justify-content: center;
+    gap:50px
 }
-#tasklists li #checklist{
-    width:12px;
-    height: 12px;
+#search{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap:10px
+}
+#searchin{
+    padding:8px;
+    border-radius: 50px;
+    border: none;
+    font-size: medium;
+}
+#searchin:focus{
+    outline:0;
+}
+#searchbtn{
+    padding:8px;
     border-radius: 50%;
-    border: 1px solid rgb(150, 148, 148);
+    border: none;
+    font-size: medium;
+    cursor:pointer;
 }
-#tasklists li #oneTask{
-    display: flex;
-    flex-grow: 1;
-    justify-content: space-between;
+#searchbtn:hover{
+    background-color: rgb(214, 214, 214);
+}
+#stats{
+    display: none;
+    flex-direction: column;
+    font-size: x-large;
+    justify-content:center;
     align-items: center;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.07);
-    transition: box-shadow 0.2s;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+}
+#weather-icon{
+    width: 100px;
 }
 
-.done{
-    text-decoration: line-through;}
-
-.active{
-    background-color: #91cdf2;
-}
-
-#tasklists li:hover {
-    box-shadow: 0 4px 14px rgba(0,0,0,0.10);
-    background: #e8f3fd;
-}
-
-#tasklists h4 {
-    font-size: 1.1rem;
-    color: #364d79;
-    margin: 0;
-}
-
-#tasklists #editInput{
-    background-color: transparent;
-    outline: none;
-    border: none;
-    font-weight: 700;
-    box-sizing: border-box;
-    font-size: 1.1rem;
-    color: #364d79;
-}
-
-#btnContainer{
+.details{
     display: flex;
-    gap:15px
-}
-
-.editbtn {
-    padding: 7px 15px;
-    background-color: #009eff;
-    color: white;
-    border: none;
-    border-radius: 50px;
-    font-size: 1rem;
+    align-items: center;
+    justify-content: space-between;
+    font-size: small;
     font-weight: 500;
-    cursor: pointer;
-    transition: background 0.2s;
+    gap: 60px;
+    margin-top: 35px;
 }
-.editbtn:hover {
-    background: royalblue;
+.col{
+    display: flex;
+    align-items: center;
+    text-align: left;
 }
-
-.delbtn {
-    padding: 7px 15px;
-    background-color: #f44336;
-    color: white;
-    border: none;
-    border-radius: 50px;
-    font-size: 1rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background 0.2s;
+.col img{
+    width: 35px;
+    margin-right: 10px;
+}
+.humidity, .wind{
+    font-size: large;
+    margin-top: -5px;
 }
 
-.delbtn:hover {
-    background: #d32f2f;
+.error{
+    display: none;
+    text-align: left;
+    color:white;
+    font-weight: 700;
+    font-size: large;
+    margin-top: 10px;
 }
-
-
-
 @media (max-width: 600px) {
-    #container {
-        padding: 18px 8px;
-    }
-    #form {
-        flex-direction: column;
-        gap: 7px;
-    }
-    #submit {
-        width: 100%;
-    }
-    #tasklists li {
-        flex-direction: column;
-        align-items: stretch;
-    }
+  #container {
+    width: 90vw;
+    height: auto;
+    padding: 20px 0;
+  }
+  
+  main h1 {
+    font-size: large;
+  }
+  
+  #stats {
+    font-size: large;
+  }
+  
+  .details {
+    gap: 20px;
+  }
 }
