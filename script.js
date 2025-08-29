@@ -1,55 +1,120 @@
-const apikey = "232f1a0316df9706867d29083202724e"
-const apiUrl = "https://api.openweathermap.org/data/2.5/weather?units=metric&q="
-const searchin = document.querySelector("#searchin")    
-const searchbtn = document.querySelector("#searchbtn")    
-const weatherIcon = document.querySelector("#weather-icon")
-
-async function checkWeather(city) {
-    city = city.trim()
-
-    if(!city) return;
+let tasks= []
 
 
-    try{
-    const response = await fetch(apiUrl + city + `&appid=${apikey}`)
-
-
-    if(response.status===404){
-        document.querySelector(".error").style.display = 'block'
-        document.querySelector("#stats").style.display = 'none'
-    }
-    else{
-    const data = await response.json()
-
-    console.log(data)
-    document.querySelector("#temperature").innerHTML= Math.round(data.main.temp) + "°C"
-    document.querySelector("#city").innerHTML = data.name
-    document.querySelector(".humidity").innerHTML= data.main.humidity+" %"
-    document.querySelector(".wind").innerHTML= data.wind.speed+" km/h"
-
-    if(data.weather[0].main == 'Clouds'){
-        weatherIcon.src = './images/cloud.png'
-    }
-    else if(data.weather[0].main == 'Rain'){
-        weatherIcon.src = './images/rain-cloud.png'
-    }
-    else if(data.weather[0].main == 'Clear'){
-        weatherIcon.src = './images/sun.png'
-    }
-    else if(data.weather[0].main == 'Drizzle'){
-        weatherIcon.src = './images/partly cloud.png'
-    }
-
-    document.querySelector("#stats").style.display = 'block'
-    document.querySelector(".error").style.display = 'none'
-}
-}catch(error){
-    document.querySelector("#stats").style.display = 'none'
-    document.querySelector(".error").style.display = 'block'
-    console.log("Error fechting data: " ,error)
-}
+function saveTask(){
+    localStorage.setItem('tasks',JSON.stringify(tasks))
 }
 
-searchbtn.addEventListener("click",function(){
-    checkWeather(searchin.value)
+function loadTask(){
+    const stored = localStorage.getItem('tasks')
+    tasks = stored ? JSON.parse(stored):[]
+}
+
+function renderTasks(){
+    const tasklist = document.getElementById("tasklists")
+    tasklist.innerHTML = ''
+    
+    tasks.forEach((task,index) => {
+        const li = document.createElement('li')
+
+        const btn = document.createElement("button")
+        const oneTask = document.createElement("div")
+        const btnContainer = document.createElement("div")
+        btn.id = "checklist"
+        oneTask.id = 'oneTask'
+        btnContainer.id = "btnContainer"
+
+
+        const h4 = document.createElement('h4')
+        h4.textContent = task.text
+        li.appendChild(btn)
+        li.appendChild(oneTask)
+        oneTask.appendChild(h4)
+
+        const editbtn = document.createElement('button')
+        editbtn.textContent = 'Edit'
+        editbtn.classList = 'editbtn'
+
+        editbtn.addEventListener("click",()=>{
+            const h4 = li.querySelector("h4")
+
+            const input = document.createElement("input")
+            input.type = 'text'
+            input.value = h4.textContent
+            input.id = 'editInput'
+            input.style.flexGrow =1
+            input.style.fontsize = '1.1rem'
+            input.style.padding = '5px'
+
+            oneTask.replaceChild(input, h4)
+            input.focus()
+
+            function saveEdit(){
+                const editedValue = input.value.trim()
+
+                if(editedValue === ''){
+                    alert("Task cannot be empty")
+                    input.focus();
+                    return;
+                }
+                tasks[index].text = editedValue;
+                saveTask()
+                renderTasks()
+            }
+
+            input.addEventListener('keydown',(e)=>{
+                if(e.key ==='Enter'){
+                    saveEdit()
+                }
+            })
+
+            input.addEventListener('blur', () => {
+            saveEdit();
+            });
+        })
+
+        const delbtn = document.createElement('button')
+        delbtn.textContent = 'Delete'
+        delbtn.classList = 'delbtn'
+        
+        delbtn.addEventListener('click',function(){
+            tasks.splice(index,1);
+            saveTask()
+            renderTasks()
+        })
+        
+        if(task.completed){
+            h4.classList.toggle("done");
+            btn.classList.toggle('active');
+        }
+        
+            btn.addEventListener("click",()=>{
+            task.completed = !task.completed
+            saveTask()
+            renderTasks()
+        })
+
+        
+        oneTask.appendChild(btnContainer)
+        btnContainer.appendChild(editbtn)
+        btnContainer.appendChild(delbtn)
+        tasklist.appendChild(li)
+    })
+}
+
+window.onload = function(){
+    loadTask()
+    renderTasks()
+}
+
+document.querySelector("#submit").addEventListener('click',function(){
+    let taskValue = document.querySelector("#tasks").value.trim()
+    if(taskValue === ''){
+        alert("Please Insert something")
+        return;
+    }
+    tasks.push({text:taskValue,completed: false})
+    saveTask()
+    renderTasks()
+    document.querySelector("#tasks").value = ''
 })
